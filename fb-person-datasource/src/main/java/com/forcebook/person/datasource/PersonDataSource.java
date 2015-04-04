@@ -15,10 +15,18 @@ public interface PersonDataSource
     void createPerson(Person person);
     
     /**
-     * Retrieves a person by the person UID
-     * @param uid The person UID
+     * Retrieves a person by the person UID.
+     * @param uid The person UID.
+     * @return The person.
      */
-    void retrievePersonByUID(String uid);
+    Person retrievePersonByUID(String uid);
+    
+    /**
+     * Retrieves a person's metadata by UID.
+     * @param UID The UID.
+     * @return The person metadata.
+     */
+    PersonMetaData retrievePersonMetaDataByUID(String UID);
     
     /**
      * Updates a person. Values that are not {@code null} will be updated. UID
