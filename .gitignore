@@ -1,0 +1,9 @@
+/target/
+.classpath
+.project
+.settings/
+/fb-common/.gitignore
+/fb-person-biz/.gitignore
+/fb-person-biz-datasource/.gitignore
+/fb-person-datasource/.gitignore
+/fb-person-datasource-mock/.gitignore

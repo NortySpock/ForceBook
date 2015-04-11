@@ -33,7 +33,7 @@ public interface PersonDataSource
      * is required, however.
      * @param person The {@code Person} with the updated values.
      */
-    void updatePerson(Person person);
+    void updatePerson(String uid, Person person);
     
     /**
      * Deletes the person with the given UID.
@@ -48,4 +48,5 @@ public interface PersonDataSource
      * this implementation.
      */
     void restorePersonByUID(String uid) throws UnsupportedOperationException;
+
 }
