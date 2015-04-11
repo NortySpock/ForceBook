@@ -39,6 +39,13 @@ public interface PersonDataSource
     void updatePerson(Person person);
     
     /**
+     * Updates a person's metadata. Values that are not {@code null} will be updated.
+     * UID is required, however.
+     * @param metadata The {@code PersonMetaData} with the updated values. Cannot be {@code null}
+     */
+    void updateMetadata(PersonMetaData metadata);
+    
+    /**
      * Deletes the person with the given UID.
      * @param uid The UID of the person.
      */
