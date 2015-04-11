@@ -2,12 +2,14 @@ package com.forcebook.person.datasource;
 
 import java.time.Instant;
 
+import com.forcebook.common.Identifable;
+
 /**
  * Provides metadata about the person data.
  * @author Jason W. Thompson -
  * https://google.com/+JasonWThompson_SoftwareDeveloper
  */
-public interface PersonMetaData
+public interface PersonMetaData extends Identifable
 {
     /**
      * The last time the person was updated.
