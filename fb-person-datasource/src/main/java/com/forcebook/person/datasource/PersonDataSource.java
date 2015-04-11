@@ -1,6 +1,7 @@
 package com.forcebook.person.datasource;
 
 import com.forcebook.person.biz.Person;
+import java.util.Optional;
 
 /**
  * A data source for person data
@@ -19,16 +20,16 @@ public interface PersonDataSource
     /**
      * Retrieves a person by the person UID.
      * @param uid The person UID. Cannot be {@code null}
-     * @return The person.
+     * @return An {@link Optional} that contains the person if present.
      */
-    Person retrievePersonByUID(String uid);
+    Optional<Person> retrievePersonByUID(String uid);
     
     /**
      * Retrieves a person's metadata by UID.
      * @param UID The UID. Cannot be {@code null}
-     * @return The person metadata.
+     * @return An {@link Optional} that contains the person's metadata if present.
      */
-    PersonMetaData retrievePersonMetaDataByUID(String UID);
+    Optional<PersonMetaData> retrievePersonMetaDataByUID(String UID);
     
     /**
      * Updates a person. Values that are not {@code null} will be updated. UID
