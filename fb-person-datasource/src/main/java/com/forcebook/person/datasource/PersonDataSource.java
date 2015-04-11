@@ -36,7 +36,7 @@ public interface PersonDataSource
      * is required, however.
      * @param person The {@code Person} with the updated values. Cannot be {@code null}
      */
-    void updatePerson(String uid, Person person);
+    void updatePerson(Person person);
     
     /**
      * Deletes the person with the given UID.

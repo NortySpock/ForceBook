@@ -7,35 +7,47 @@ import com.forcebook.person.biz.Name;
 import com.forcebook.person.biz.Person;
 
 public class SimplePerson implements Person {
-	private String uuid;
-	private Name name;
-	private Optional<ForceAlignment> forceAlignment;
+    private String uuid;
+    private Name name;
+    private Optional<ForceAlignment> forceAlignment;
 
-	@Override
-	public Optional<ForceAlignment> getForceAlignment() {
-		return forceAlignment;
-	}
+    @Override
+    public Optional<ForceAlignment> getForceAlignment() {
+        return forceAlignment;
+    }
 
-	public void setForceAlignment(Optional<ForceAlignment> inForceAlignment) {
-		forceAlignment = inForceAlignment;
-	}
+    /**
+     * The enum of the {@code ForceAlignment} (LIGHT or DARK)
+     * @param aForceAlignment
+     */
+    public void setForceAlignment(Optional<ForceAlignment> aForceAlignment) {
+        forceAlignment = aForceAlignment;
+    }
 
-	@Override
-	public Name getName() {
-		return name;
-	}
+    @Override
+    public Name getName() {
+        return name;
+    }
 
-	public void setName(Name _name) {
-		this.name = _name;
-	}
+    /**
+     * The Name of the {@code Person}
+     * @param aName
+     */
+    public void setName(Name aName) {
+        this.name = aName;
+    }
 
-	@Override
-	public String getUID() {
-		return uuid;
-	}
+    @Override
+    public String getUID() {
+        return uuid;
+    }
 
-	public void setUID(String _UUID) {
-		this.uuid = _UUID;
-	}
+    /**
+     * The UUID of the {@code Person}
+     * @param aUUID
+     */
+    public void setUID(String aUUID) {
+        this.uuid = aUUID;
+    }
 
 }

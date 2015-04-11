@@ -4,8 +4,11 @@ import com.forcebook.person.biz.Person;
 import com.forcebook.person.datasource.PersonDataSource;
 import com.forcebook.person.datasource.PersonMetaData;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -16,49 +19,60 @@ import java.util.UUID;
  *         https://google.com/+JasonWThompson_SoftwareDeveloper
  */
 public class MockPersonDataSource implements PersonDataSource {
-	private static Map<String, Person> personsByUID = new HashMap<>();
-	private static Map<String, Person> deletedPersonsByUID = new HashMap<>();
+    private static final Map<String, Person> PERSONS_BY_UID = new HashMap<>();
+    private static final Map<String, Person> DELETED_PERSONS_BY_UID = new HashMap<>();
+    private static final Map<String, Person> PERSON_METADATA_BY_UID = new HashMap<>();
 
-	@Override
-	/** Creates UID and person */
-	public void createPerson(Person person) {
-		String myUUID = UUID.randomUUID().toString();
-		SimplePerson myPerson = new SimplePerson();
-		myPerson.setUID(myUUID);
-		myPerson.setName(person.getName());
+    @Override
+    public String createPerson(Person person) {
+        checkNotNull(person, "The parameter person cannot be null.");
+        final String myUUID = UUID.randomUUID().toString();
+        SimplePerson myPerson = new SimplePerson();
+        myPerson.setUID(myUUID);
+        myPerson.setName(person.getName());
 
-		personsByUID.put(myUUID, myPerson);
-	}
+        PERSONS_BY_UID.put(myUUID, myPerson);
+        return myUUID;
+    }
 
-	@Override
-	/** Updates UID with given Person */
-	public void updatePerson(String uid, Person person) {
-		personsByUID.put(uid, person);
-	}
+    @Override
+    public void updatePerson(Person person) {
+        checkNotNull(person, "The parameter person cannot be null.");
+        PERSONS_BY_UID.put(person.getUID(), person);
+    }
 
-	@Override
-	/** Moves person into "deleted" bin; can be restored.  */
-	public void dropPersonByUID(String uid) {
-		deletedPersonsByUID.put(uid, personsByUID.get(uid));
-		personsByUID.remove(uid);
-	}
+    @Override
+    public void dropPersonByUID(String uid) {
+        final Person temp = PERSONS_BY_UID.get(uid);
+        if (temp != null) {
+            DELETED_PERSONS_BY_UID.put(uid, temp);
+            PERSONS_BY_UID.remove(uid);
+        }
+    }
 
-	@Override
-	/** Restore a deleted person */
-	public void restorePersonByUID(String uid) {
-		personsByUID.put(uid, deletedPersonsByUID.get(uid));
-		deletedPersonsByUID.remove(uid);
+    @Override
+    public void restorePersonByUID(String uid) {
+        final Person temp = DELETED_PERSONS_BY_UID.get(uid);
+        if (temp != null) {
+            PERSONS_BY_UID.put(uid, temp);
+            DELETED_PERSONS_BY_UID.remove(uid);
+        }
+    }
 
-	}
+    @Override
+    public Optional<Person> retrievePersonByUID(String uid) {
+        return Optional.ofNullable(PERSONS_BY_UID.get(uid));
+    }
 
-	@Override
-	/** Get a Person. */
-	public Person retrievePersonByUID(String uid) {
-		return personsByUID.get(uid);
-	}
+    @Override
+    public Optional<PersonMetaData> retrievePersonMetaDataByUID(String UID) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
-	@Override
-	public PersonMetaData retrievePersonMetaDataByUID(String UID) {
-		throw new UnsupportedOperationException("Not supported yet.");
-	}
+    public static void clearMock() {
+        PERSONS_BY_UID.clear();
+        DELETED_PERSONS_BY_UID.clear();
+        PERSON_METADATA_BY_UID.clear();
+    }
+
 }
