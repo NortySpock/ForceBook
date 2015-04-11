@@ -19,8 +19,9 @@ public interface PersonManager
      * If the 
      * 
      * @param person The person to store.
+     * @return The UID of the person after stored.
      */
-    void storePerson(Person person);
+    String storePerson(Person person);
     
     /**
      * Finds a {@code Person} by UID
