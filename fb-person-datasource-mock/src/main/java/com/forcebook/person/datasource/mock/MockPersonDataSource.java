@@ -14,10 +14,10 @@ import java.util.UUID;
 /**
  * A Mock implementation of a {@link PersonDataSource} that holds persons in
  * memory.
- * 
+ *
  * @author Jason W. Thompson -
  *         https://google.com/+JasonWThompson_SoftwareDeveloper
- * @author David K. Norton 
+ * @author David K. Norton
  *         david.k.norton@gmail.com
  */
 public class MockPersonDataSource implements PersonDataSource {
@@ -32,7 +32,7 @@ public class MockPersonDataSource implements PersonDataSource {
         final String myUUID = UUID.randomUUID().toString();
         SimplePerson myPerson = new SimplePerson();
         myPerson.setUID(myUUID);
-        myPerson.setName(person.getName());        
+        myPerson.setName(person.getName());
         SimplePersonMetaData metadata = new SimplePersonMetaData(myUUID);
 
         PERSONS_BY_UID.put(myUUID, myPerson);
@@ -44,13 +44,12 @@ public class MockPersonDataSource implements PersonDataSource {
     public void updatePerson(Person person) {
         checkNotNull(person, "The parameter person is null.");
         PERSONS_BY_UID.put(person.getUID(), person);
+
+        SimplePersonMetaData metadata = new SimplePersonMetaData(person.getUID());
+        PERSON_METADATA_BY_UID.put(person.getUID(), metadata);
     }
-    
-    @Override
-    public void updateMetadata(PersonMetaData metadata) {
-        checkNotNull(metadata, "The parameter metadata is null.");
-        PERSON_METADATA_BY_UID.put(metadata.getUID(), metadata);
-    }
+
+
 
     @Override
     public void dropPersonByUID(String uid) {
@@ -79,7 +78,7 @@ public class MockPersonDataSource implements PersonDataSource {
     @Override
     public Optional<Person> retrievePersonByUID(String uid) {
         return Optional.ofNullable(PERSONS_BY_UID.get(uid));
-    }    
+    }
 
     @Override
     public Optional<PersonMetaData> retrievePersonMetaDataByUID(String uid) {
