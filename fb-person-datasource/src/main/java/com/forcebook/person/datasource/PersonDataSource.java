@@ -9,48 +9,41 @@ import java.util.Optional;
  */
 public interface PersonDataSource
 {
-   /**
+    /**
      * Creates a person in the data source
      * @param person The person to create. This must not be {@code null} and all
      * properties must be populated.
      * @return The UID of the newly created person.
      */
     String createPerson(Person person);
-    
+
     /**
      * Retrieves a person by the person UID.
      * @param uid The person UID. Cannot be {@code null}
      * @return An {@link Optional} that contains the person if present.
      */
     Optional<Person> retrievePersonByUID(String uid);
-    
+
     /**
      * Retrieves a person's metadata by UID.
      * @param UID The UID. Cannot be {@code null}
      * @return An {@link Optional} that contains the person's metadata if present.
      */
     Optional<PersonMetaData> retrievePersonMetaDataByUID(String UID);
-    
+
     /**
      * Updates a person. Values that are not {@code null} will be updated. UID
      * is required, however.
      * @param person The {@code Person} with the updated values. Cannot be {@code null}
      */
     void updatePerson(Person person);
-    
-    /**
-     * Updates a person's metadata. Values that are not {@code null} will be updated.
-     * UID is required, however.
-     * @param metadata The {@code PersonMetaData} with the updated values. Cannot be {@code null}
-     */
-    void updateMetadata(PersonMetaData metadata);
-    
+
     /**
      * Deletes the person with the given UID.
      * @param uid The UID of the person.
      */
     void dropPersonByUID(String uid);
-    
+
     /**
      * Restores a deleted person. This may not be supported in all implementations.
      * @param uid The UID of the person to restore. Cannot be {@code null}
