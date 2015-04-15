@@ -16,19 +16,6 @@ public class SimplePersonMetaData implements PersonMetaData{
     public SimplePersonMetaData(String aUID) {
         uuid = aUID;
         updateTime = Instant.now();
-        updateForceAlignmentTime = Instant.now();
-    }
-
-    /**
-     * Allows specific update times in {@code PersonMetaData} object for UID
-     * @param aUID UID to update
-     * @param aTime Person update time
-     * @param faTime ForceAlignment update time 
-     */
-    public SimplePersonMetaData(String aUID, Instant aTime, Instant faTime) {
-        uuid = aUID;
-        updateTime = aTime;
-        updateForceAlignmentTime = faTime;
     }
 
     @Override
@@ -39,6 +26,10 @@ public class SimplePersonMetaData implements PersonMetaData{
     @Override
     public Instant getForceAlignmentUpdateTime() {
         return updateForceAlignmentTime;
+    }
+
+    public void setForceAlignmentUpdateTime() {
+        updateForceAlignmentTime = updateTime;
     }
 
     @Override
