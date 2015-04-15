@@ -43,9 +43,22 @@ public class MockPersonDataSource implements PersonDataSource {
     @Override
     public void updatePerson(Person person) {
         checkNotNull(person, "The parameter person is null.");
+
+        //need previous person to be able to check for a force alignment change
+        final Optional<Person> previousPerson = Optional.ofNullable(PERSONS_BY_UID.get(person.getUID()));
         PERSONS_BY_UID.put(person.getUID(), person);
 
         SimplePersonMetaData metadata = new SimplePersonMetaData(person.getUID());
+
+        //if the force alignment changed
+        if(previousPerson.isPresent()
+                && previousPerson.get().getForceAlignment().isPresent()
+                && person.getForceAlignment().isPresent()
+                && previousPerson.get().getForceAlignment().get() != person.getForceAlignment().get()){
+
+            //TODO: Throw exception if within 30 days
+            metadata.setForceAlignmentUpdateTime();
+        }
         PERSON_METADATA_BY_UID.put(person.getUID(), metadata);
     }
 
@@ -53,24 +66,24 @@ public class MockPersonDataSource implements PersonDataSource {
 
     @Override
     public void dropPersonByUID(String uid) {
-        final Person deletedPerson = PERSONS_BY_UID.get(uid);
-        final PersonMetaData deletedMetaData = PERSON_METADATA_BY_UID.get(uid);
-        if (deletedPerson != null) {
-            DELETED_PERSONS_BY_UID.put(uid, deletedPerson);
+        final Optional<Person> deletedPerson = Optional.ofNullable(PERSONS_BY_UID.get(uid));
+        final Optional<PersonMetaData> deletedMetaData = Optional.ofNullable(PERSON_METADATA_BY_UID.get(uid));
+        if (deletedPerson.isPresent() && deletedMetaData.isPresent()) {
+            DELETED_PERSONS_BY_UID.put(uid, deletedPerson.get());
             PERSONS_BY_UID.remove(uid);
-            DELETED_PERSON_METADATA_BY_UID.put(uid,deletedMetaData);
+            DELETED_PERSON_METADATA_BY_UID.put(uid,deletedMetaData.get());
             PERSON_METADATA_BY_UID.remove(uid);
         }
     }
 
     @Override
     public void restorePersonByUID(String uid) {
-        final Person deletedPerson = DELETED_PERSONS_BY_UID.get(uid);
-        final PersonMetaData deletedMetaData = PERSON_METADATA_BY_UID.get(uid);
-        if (deletedPerson != null) {
-            PERSONS_BY_UID.put(uid, deletedPerson);
+        final Optional<Person> deletedPerson = Optional.ofNullable(DELETED_PERSONS_BY_UID.get(uid));
+        final Optional<PersonMetaData> deletedMetaData = Optional.ofNullable(PERSON_METADATA_BY_UID.get(uid));
+        if (deletedPerson.isPresent() && deletedMetaData.isPresent()) {
+            PERSONS_BY_UID.put(uid, deletedPerson.get());
             DELETED_PERSONS_BY_UID.remove(uid);
-            PERSON_METADATA_BY_UID.put(uid, deletedMetaData);
+            PERSON_METADATA_BY_UID.put(uid, deletedMetaData.get());
             DELETED_PERSON_METADATA_BY_UID.remove(uid);
         }
     }
@@ -85,7 +98,7 @@ public class MockPersonDataSource implements PersonDataSource {
         return Optional.ofNullable(PERSON_METADATA_BY_UID.get(uid));
     }
 
-    public static void clearMock() {
+    public static void reset() {
         PERSONS_BY_UID.clear();
         DELETED_PERSONS_BY_UID.clear();
         PERSON_METADATA_BY_UID.clear();
