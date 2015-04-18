@@ -6,6 +6,8 @@ import com.forcebook.person.datasource.PersonMetaData;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.security.InvalidParameterException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -33,6 +35,7 @@ public class MockPersonDataSource implements PersonDataSource {
         SimplePerson myPerson = new SimplePerson();
         myPerson.setUID(myUUID);
         myPerson.setName(person.getName());
+        myPerson.setForceAlignment(person.getForceAlignment());
         SimplePersonMetaData metadata = new SimplePersonMetaData(myUUID);
 
         PERSONS_BY_UID.put(myUUID, myPerson);
@@ -41,23 +44,28 @@ public class MockPersonDataSource implements PersonDataSource {
     }
 
     @Override
-    public void updatePerson(Person person) {
+    public void updatePerson(Person person) throws Exception {
         checkNotNull(person, "The parameter person is null.");
+        if(null == PERSONS_BY_UID.get(person.getUID())){
+            throw new InvalidParameterException("The person requested does not exist.");
+        }
 
         //need previous person to be able to check for a force alignment change
-        final Optional<Person> previousPerson = Optional.ofNullable(PERSONS_BY_UID.get(person.getUID()));
+        final Person previousPerson = PERSONS_BY_UID.get(person.getUID());
         PERSONS_BY_UID.put(person.getUID(), person);
 
         SimplePersonMetaData metadata = new SimplePersonMetaData(person.getUID());
 
-        //if the force alignment changed
-        if(previousPerson.isPresent()
-                && previousPerson.get().getForceAlignment().isPresent()
-                && person.getForceAlignment().isPresent()
-                && previousPerson.get().getForceAlignment().get() != person.getForceAlignment().get()){
+        //if the force alignment status changed (null vs LIGHT vs DARK)
+        if(previousPerson.getForceAlignment().isPresent() !=  person.getForceAlignment().isPresent()
+                || previousPerson.getForceAlignment().get() != person.getForceAlignment().get()){
 
-            //TODO: Throw exception if within 30 days
             metadata.setForceAlignmentUpdateTime();
+
+            final PersonMetaData previousMetadata = PERSON_METADATA_BY_UID.get(person.getUID());
+            if(previousMetadata.getForceAlignmentUpdateTime().plus(Duration.ofDays(30)).isAfter(metadata.getForceAlignmentUpdateTime())){
+                throw new Exception("Cannot update forceAlignment more often than once every 30 days.");
+            }
         }
         PERSON_METADATA_BY_UID.put(person.getUID(), metadata);
     }

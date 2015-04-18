@@ -20,8 +20,8 @@ public class SimplePerson implements Person {
      * The enum of the {@code ForceAlignment} (LIGHT or DARK)
      * @param aForceAlignment
      */
-    public void setForceAlignment(Optional<ForceAlignment> aForceAlignment) {
-        forceAlignment = aForceAlignment;
+    public void setForceAlignment(Optional<ForceAlignment> forceAlignment) {
+        this.forceAlignment = forceAlignment;
     }
 
     @Override
@@ -33,8 +33,8 @@ public class SimplePerson implements Person {
      * The Name of the {@code Person}
      * @param aName
      */
-    public void setName(Name aName) {
-        this.name = aName;
+    public void setName(Name name) {
+        this.name = name;
     }
 
     @Override
@@ -46,8 +46,8 @@ public class SimplePerson implements Person {
      * The UUID of the {@code Person}
      * @param aUUID
      */
-    public void setUID(String aUUID) {
-        this.uuid = aUUID;
+    public void setUID(String uid) {
+        this.uuid = uid;
     }
 
 }

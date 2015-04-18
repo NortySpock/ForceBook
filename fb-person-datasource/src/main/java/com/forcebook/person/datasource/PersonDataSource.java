@@ -1,6 +1,7 @@
 package com.forcebook.person.datasource;
 
 import com.forcebook.person.biz.Person;
+
 import java.util.Optional;
 
 /**
@@ -35,8 +36,9 @@ public interface PersonDataSource
      * Updates a person. Values that are not {@code null} will be updated. UID
      * is required, however.
      * @param person The {@code Person} with the updated values. Cannot be {@code null}
+     * @throws Exception
      */
-    void updatePerson(Person person);
+    void updatePerson(Person person) throws Exception;
 
     /**
      * Deletes the person with the given UID.
