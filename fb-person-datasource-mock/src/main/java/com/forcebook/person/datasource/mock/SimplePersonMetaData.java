@@ -11,24 +11,11 @@ public class SimplePersonMetaData implements PersonMetaData{
 
     /**
      * Creates a {@code PersonMetaData} object for UID
-     * @param aUID UID to attach meta data to
+     * @param uid -- UID to attach meta data to
      */
-    public SimplePersonMetaData(String aUID) {
-        uuid = aUID;
+    public SimplePersonMetaData(String uid) {
+        uuid = uid;
         updateTime = Instant.now();
-        updateForceAlignmentTime = Instant.now();
-    }
-
-    /**
-     * Allows specific update times in {@code PersonMetaData} object for UID
-     * @param aUID UID to update
-     * @param aTime Person update time
-     * @param faTime ForceAlignment update time 
-     */
-    public SimplePersonMetaData(String aUID, Instant aTime, Instant faTime) {
-        uuid = aUID;
-        updateTime = aTime;
-        updateForceAlignmentTime = faTime;
     }
 
     @Override
@@ -41,8 +28,8 @@ public class SimplePersonMetaData implements PersonMetaData{
         return updateForceAlignmentTime;
     }
 
-    @Override
-    public String getUID() {
-        return uuid;
+    public void setForceAlignmentUpdateTime() {
+        updateForceAlignmentTime = updateTime;
     }
+
 }
