@@ -7,14 +7,12 @@ import com.forcebook.person.datasource.PersonMetaData;
 public class SimplePersonMetaData implements PersonMetaData{
     private Instant updateTime;
     private Instant updateForceAlignmentTime;
-    private String uuid;
 
     /**
      * Creates a {@code PersonMetaData} object for UID
      * @param uid -- UID to attach meta data to
      */
-    public SimplePersonMetaData(String uid) {
-        uuid = uid;
+    public SimplePersonMetaData() {
         updateTime = Instant.now();
     }
 

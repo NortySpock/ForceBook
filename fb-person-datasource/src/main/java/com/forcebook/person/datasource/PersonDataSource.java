@@ -36,9 +36,8 @@ public interface PersonDataSource
      * Updates a person. Values that are not {@code null} will be updated. UID
      * is required, however.
      * @param person The {@code Person} with the updated values. Cannot be {@code null}
-     * @throws Exception
      */
-    void updatePerson(Person person) throws Exception;
+    void updatePerson(Person person);
 
     /**
      * Deletes the person with the given UID.
